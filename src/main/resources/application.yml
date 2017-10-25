@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  session:
+    store-type: none
+  thymeleaf:
+  #缓存禁用
+    cache: false
+    mode: LEGACYHTML5
+    encoding: utf-8
+  jmx:
+    default-domain: QualityprizeApplication
+  http:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+
+mybatis:
+  type-aliases-package: com.majy.zlj.qualityprize.domain
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  config-location: classpath:mybatis/mybatis-config.xml
+
+server:
+  tomcat:
+    accesslog:
+      enabled: true
+
+

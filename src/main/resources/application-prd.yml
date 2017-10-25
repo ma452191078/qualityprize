@@ -1,0 +1,21 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      username: root
+      password: SDL@webchat2015
+      url: jdbc:mysql://114.215.97.217:3306/scoremanager?useUnicode=true&characterEncoding=UTF-8
+      dbcp2:
+        validation-query: SELECT 1
+        test-while-idle: true
+        time-between-eviction-runs-millis: 30000
+        min-evictable-idle-time-millis: 1800000
+        num-tests-per-eviction-run: 30
+
+
+#自定义配置参数
+myscore:
+  imgPath: /usr/local/tomcat/tomcat2/webapps/scoremanager_ui/
+  imgDictory: static/
