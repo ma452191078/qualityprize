@@ -3,9 +3,11 @@ package com.majy.zlj.qualityprize.controller;
 import com.majy.zlj.qualityprize.constant.AppConstant;
 import com.majy.zlj.qualityprize.domain.GameInfo;
 import com.majy.zlj.qualityprize.domain.GameRoleInfo;
+import com.majy.zlj.qualityprize.domain.GroupInfo;
 import com.majy.zlj.qualityprize.domain.UserInfo;
 import com.majy.zlj.qualityprize.mapper.GameInfoMapper;
 import com.majy.zlj.qualityprize.mapper.GameRoleInfoMapper;
+import com.majy.zlj.qualityprize.mapper.GroupInfoMapper;
 import com.majy.zlj.qualityprize.mapper.UserInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +33,8 @@ public class GameController {
     private GameRoleInfoMapper gameRoleInfoMapper;
     @Autowired
     private UserInfoMapper userInfoMapper;
+    @Autowired
+    private GroupInfoMapper groupInfoMapper;
 
     @RequestMapping("/getGameList")
     public Map<String,Object> getGameList(GameInfo gameInfo){
@@ -60,6 +64,11 @@ public class GameController {
                 List<GameRoleInfo> result = gameRoleInfoMapper.getGameRoleListByGame(gameInfoList.get(i).getGameId());
                 if (result != null && result.size() > 0){
                     gameInfoList.get(i).setGameRoleInfoList(result);
+                }
+
+                List<GroupInfo> groupInfoList = groupInfoMapper.getGroupListByGameId(gameInfoList.get(i).getGameId());
+                if (groupInfoList != null && groupInfoList.size() > 0){
+                    gameInfoList.get(i).setGroupInfoList(groupInfoList);
                 }
             }
         }
@@ -179,7 +188,7 @@ public class GameController {
      * @return 创建结果
      */
     private void createGameRole(GameInfo gameInfo){
-        //TODO 创建比赛评分规则功能
+        //创建比赛评分规则功能
         gameRoleInfoMapper.deleteAllByGame(gameInfo.getGameId());
         List<GameRoleInfo> roleInfoList = gameInfo.getGameRoleInfoList();
         if (roleInfoList != null && roleInfoList.size() > 0){
@@ -191,6 +200,24 @@ public class GameController {
                 gameRoleInfo.setGameId(gameInfo.getGameId());
                 gameRoleInfoMapper.insert(gameRoleInfo);
                 i ++ ;
+            }
+        }
+    }
+
+    /**
+     * 创建比赛分组
+     * @param gameInfo
+     */
+    private void createGroup(GameInfo gameInfo){
+        groupInfoMapper.deleteByGameId(gameInfo.getGameId());
+        List<GroupInfo> groupInfoList = gameInfo.getGroupInfoList();
+        if (groupInfoList != null && groupInfoList.size() > 0){
+            int i = 0;
+            for(GroupInfo groupInfo : groupInfoList){
+                groupInfo.setGourpId(UUID.randomUUID().toString());
+                groupInfo.setGameId(gameInfo.getGameId());
+                groupInfoMapper.insert(groupInfo);
+                i ++;
             }
         }
     }

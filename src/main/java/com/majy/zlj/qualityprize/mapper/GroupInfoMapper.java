@@ -15,6 +15,8 @@ public interface GroupInfoMapper {
 
     List<GroupInfo> getGroupList(GroupInfo groupInfo);
 
+    List<GroupInfo> getGroupListByGameId(String gameId);
+
     GroupInfo getGroupInfoById(String groupId);
 
     int insert(GroupInfo groupInfo);
@@ -22,4 +24,6 @@ public interface GroupInfoMapper {
     int update(GroupInfo groupInfo);
 
     int delete(String groupId);
+
+    int deleteByGameId(String gameId);
 }

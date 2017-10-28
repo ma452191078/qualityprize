@@ -74,5 +74,7 @@ public class GameInfo {
 
     private List<GameRoleInfo> gameRoleInfoList;
 
+    private List<GroupInfo> groupInfoList;
+
 
 }

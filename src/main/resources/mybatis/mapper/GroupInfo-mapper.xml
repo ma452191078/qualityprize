@@ -43,6 +43,13 @@
         WHERE gourpId = #{gourpId}
     </select>
 
+    <select id="getGroupListByGameId" parameterType="java.lang.String" resultType="com.majy.zlj.qualityprize.domain.GroupInfo">
+        SELECT
+        *
+        FROM groupinfo
+        WHERE gameId = #{gameId}
+    </select>
+
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.GroupInfo" >
         INSERT INTO
         groupinfo
@@ -92,6 +99,9 @@
         groupinfo
         WHERE
         groupId =#{groupId}
+    </delete>
+    <delete id="deleteByGameId" parameterType="java.lang.String">
+        DELETE FROM groupinfo WHERE gameId = #{gameId}
     </delete>
 
 </mapper>
