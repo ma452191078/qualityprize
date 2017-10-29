@@ -12,7 +12,7 @@
         SELECT
         *
         FROM groupinfo
-        ORDER BY groupId groupIndex
+        ORDER BY groupId, groupIndex
     </select>
 
     <select id="getGroupList" parameterType="com.majy.zlj.qualityprize.domain.GroupInfo" resultType="list" resultMap="BaseResultMap"  >
@@ -29,10 +29,7 @@
             <if test="gameId != null and gameId != '' ">
                 and gameId = #{gameId}
             </if>
-            <if test="groupIndex != null and groupIndex != '' ">
-                and groupIndex = #{groupIndex}
-            </if>
-            ORDER BY groupId groupIndex
+            ORDER BY groupId, groupIndex
         </where>
     </select>
 
