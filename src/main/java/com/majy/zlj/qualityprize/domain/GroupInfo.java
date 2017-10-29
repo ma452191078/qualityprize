@@ -13,7 +13,7 @@ public class GroupInfo {
     /**
      * 分组ID
      */
-    private String gourpId;
+    private String groupId;
     /**
      * 分组名称
      */

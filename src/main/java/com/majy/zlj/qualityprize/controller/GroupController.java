@@ -64,7 +64,7 @@ public class GroupController {
         Map<String, Object> result = new HashMap<>();
 
         if (groupInfo == null && !"".equals(groupInfo.getGroupName())) {
-            groupInfo.setGourpId(UUID.randomUUID().toString());
+            groupInfo.setGroupId(UUID.randomUUID().toString());
             if (groupInfoMapper.insert(groupInfo) > 0){
                 errFlag = AppConstant.REQUEST_SUCCESS;
                 errMsg = AppConstant.REQUEST_SUCCESS_VALUE;

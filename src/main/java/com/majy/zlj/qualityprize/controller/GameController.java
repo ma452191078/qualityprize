@@ -85,6 +85,7 @@ public class GameController {
     public GameInfo getGameInfoById(@RequestParam("gameId") String gameId){
         GameInfo gameInfo = gameInfoMapper.getGameInfoById(gameId);
         gameInfo.setGameRoleInfoList(gameRoleInfoMapper.getGameRoleListByGame(gameInfo.getGameId()));
+        gameInfo.setGroupInfoList(groupInfoMapper.getGroupListByGameId(gameInfo.getGameId()));
         return gameInfo;
     }
 
@@ -109,6 +110,7 @@ public class GameController {
                     if (result > 0) {
                         //创建评分规则
                         createGameRole(gameInfo);
+                        createGroup(gameInfo);
                         addFlag = "success";
                         addMessage = "比赛" + gameInfo.getGameName() + "创建成功，请为此次比赛添加选手。";
                     }
@@ -118,6 +120,7 @@ public class GameController {
                     if (result > 0){
                         //更新评分规则
                         createGameRole(gameInfo);
+                        createGroup(gameInfo);
                         addFlag = "success";
                         addMessage = "比赛" + gameInfo.getGameName() + "修改成功。";
                     }
@@ -195,7 +198,6 @@ public class GameController {
             //新增规则
             int i = 0;
             for (GameRoleInfo gameRoleInfo : roleInfoList){
-                gameRoleInfo.setRoleIndex(i);
                 gameRoleInfo.setRoleId(UUID.randomUUID().toString());
                 gameRoleInfo.setGameId(gameInfo.getGameId());
                 gameRoleInfoMapper.insert(gameRoleInfo);
@@ -214,7 +216,7 @@ public class GameController {
         if (groupInfoList != null && groupInfoList.size() > 0){
             int i = 0;
             for(GroupInfo groupInfo : groupInfoList){
-                groupInfo.setGourpId(UUID.randomUUID().toString());
+                groupInfo.setGroupId(UUID.randomUUID().toString());
                 groupInfo.setGameId(gameInfo.getGameId());
                 groupInfoMapper.insert(groupInfo);
                 i ++;

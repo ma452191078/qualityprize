@@ -29,6 +29,8 @@ public class PlayerController {
     private GameRoleInfoMapper gameRoleInfoMapper;
     @Autowired
     private UserInfoMapper userInfoMapper;
+    @Autowired
+    private GroupInfoMapper groupInfoMapper;
     /**
      * 多维度选手信息查询
      * @param playerInfo 参赛人信息作为查询条件
@@ -61,6 +63,7 @@ public class PlayerController {
             List<GameRoleInfo> result = gameRoleInfoMapper.getGameRoleListByGame(gameId);
             if (result != null && result.size() > 0){
                 gameInfo.setGameRoleInfoList(result);
+                gameInfo.setGroupInfoList(groupInfoMapper.getGroupListByGameId(gameId));
             }
 
         }

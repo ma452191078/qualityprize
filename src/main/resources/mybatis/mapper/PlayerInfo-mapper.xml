@@ -14,6 +14,8 @@
         <result column="playerAddBy" property="playerAddBy" jdbcType="VARCHAR" />
         <result column="playerDeleted" property="playerDeleted" jdbcType="VARCHAR" />
         <result column="playerActive" property="playerActive" jdbcType="VARCHAR" />
+        <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+        <result column="groupName" property="groupName" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="getAll" resultType="list" resultMap="BaseResultMap"  >
@@ -50,6 +52,9 @@
             </if>
             <if test="playerAddBy != null and playerAddBy != '' ">
                 and playerAddBy = #{playerAddBy}
+            </if>
+            <if test="groupId != null and groupId != '' ">
+                and groupId = #{groupId}
             </if>
         </where>
         ORDER BY gameId,playerAverage DESC ,playerNum
@@ -101,6 +106,12 @@
             <if test="playerAddBy != null and playerAddBy != '' ">
                 playerAddBy,
             </if>
+            <if test="groupId != null and groupId != '' ">
+                groupId,
+            </if>
+            <if test="groupName != null and groupName != '' ">
+                groupName,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="playerId != null and playerId != '' ">
@@ -130,6 +141,12 @@
             <if test="playerAddBy != null and playerAddBy != '' ">
                 #{playerAddBy},
             </if>
+            <if test="groupId != null and groupId != '' ">
+                #{groupId},
+            </if>
+            <if test="groupName != null and groupName != '' ">
+                #{groupName},
+            </if>
         </trim>
     </insert>
 
@@ -148,6 +165,8 @@
         <if test="playerAddBy != null and playerAddBy != ''">playerAddBy = #{playerAddBy},</if>
         <if test="playerDeleted != null and playerDeleted != ''">playerDeleted = #{playerDeleted},</if>
         <if test="playerActive != null and playerActive != ''">playerActive = #{playerActive},</if>
+        <if test="groupId != null and groupId != ''">groupId = #{groupId},</if>
+        <if test="groupName != null and groupName != ''">groupName = #{groupName},</if>
         </set>
         WHERE
         playerId = #{playerId}

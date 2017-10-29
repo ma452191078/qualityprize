@@ -62,5 +62,6 @@ public class PlayerInfo {
      * 分组ID
      */
     private String groupId;
+    private String groupName;
 
 }

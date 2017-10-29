@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.majy.zlj.qualityprize.mapper.GroupInfoMapper" >
     <resultMap id="BaseResultMap" type="com.majy.zlj.qualityprize.domain.GroupInfo" >
-        <id column="gourpId" property="gourpId" jdbcType="VARCHAR" />
+        <id column="groupId" property="groupId" jdbcType="VARCHAR" />
         <result column="groupName" property="groupName" jdbcType="VARCHAR" />
         <result column="groupIndex" property="groupIndex" jdbcType="VARCHAR" />
         <result column="gameId" property="gameId" jdbcType="VARCHAR" />
@@ -12,7 +12,7 @@
         SELECT
         *
         FROM groupinfo
-        ORDER BY groupId groupIndex DESC
+        ORDER BY groupId groupIndex
     </select>
 
     <select id="getGroupList" parameterType="com.majy.zlj.qualityprize.domain.GroupInfo" resultType="list" resultMap="BaseResultMap"  >
@@ -32,7 +32,7 @@
             <if test="groupIndex != null and groupIndex != '' ">
                 and groupIndex = #{groupIndex}
             </if>
-            ORDER BY groupId groupIndex DESC
+            ORDER BY groupId groupIndex
         </where>
     </select>
 
@@ -40,7 +40,7 @@
         SELECT
         *
         FROM groupinfo
-        WHERE gourpId = #{gourpId}
+        WHERE groupId = #{groupId}
     </select>
 
     <select id="getGroupListByGameId" parameterType="java.lang.String" resultType="com.majy.zlj.qualityprize.domain.GroupInfo">
@@ -54,8 +54,8 @@
         INSERT INTO
         groupinfo
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="gourpId != null and gourpId != '' ">
-                gourpId,
+            <if test="groupId != null and groupId != '' ">
+                groupId,
             </if>
             <if test="groupName != null and groupName != '' ">
                 groupName,
@@ -68,8 +68,8 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="gourpId != null and gourpId != '' ">
-                #{gourpId},
+            <if test="groupId != null and groupId != '' ">
+                #{groupId},
             </if>
             <if test="groupName != null and groupName != '' ">
                 #{groupName},
