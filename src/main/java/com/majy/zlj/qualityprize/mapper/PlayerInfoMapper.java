@@ -17,6 +17,10 @@ public interface PlayerInfoMapper {
 
     List<PlayerInfo> getPlayerList(PlayerInfo playerInfo);
 
+    List<PlayerInfo> getAvgListByPlayer(String gameId);
+
+    List<PlayerInfo> getAvgListByDepartment(String gameId);
+
     PlayerInfo getPlayerInfoById(String playerId);
 
     int insert(PlayerInfo playerInfo);

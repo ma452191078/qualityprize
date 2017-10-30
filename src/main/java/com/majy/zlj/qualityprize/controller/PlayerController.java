@@ -163,13 +163,13 @@ public class PlayerController {
         BigDecimal avgScore = new BigDecimal(0.00); //平均分
 
         if (playerId != null && !"".equals(playerId)){
-            //选手得分计算方法待完善
+            //选手得分计算方法
             List<ScoreInfo> scoreInfos = scoreInfoMapper.getScoreListByPlayer(playerId);
             if (scoreInfos != null && scoreInfos.size() > 0){
-                if (scoreInfos.size() > 2) {
-                    scoreInfos.remove(0);   //去除最低分
-                    scoreInfos.remove(scoreInfos.size() - 1); //去掉最高分
-                }
+//                if (scoreInfos.size() > 2) {
+//                    scoreInfos.remove(0);   //去除最低分
+//                    scoreInfos.remove(scoreInfos.size() - 1); //去掉最高分
+//                }
 
                 //求得总分
                 for (ScoreInfo item : scoreInfos){
@@ -222,4 +222,18 @@ public class PlayerController {
         return param;
     }
 
+    /**
+     * 查询比赛结果
+     * @param gameId
+     * @return
+     */
+    @RequestMapping("/getPlayerScoreListFroResult")
+    public Map<String, Object> getPlayerScoreListFroResult(String gameId){
+        Map<String, Object> param = new HashMap<>();
+        List<PlayerInfo> playerResult = playerInfoMapper.getAvgListByPlayer(gameId);
+        List<PlayerInfo> departmentResult = playerInfoMapper.getAvgListByDepartment(gameId);
+        param.put("playerResult", playerResult);
+        param.put("departmentResult", departmentResult);
+        return param;
+    }
 }

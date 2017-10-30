@@ -75,6 +75,20 @@
         WHERE playerId = #{playerId}
     </select>
 
+    <select id="getAvgListByPlayer" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT b.playerId, b.gameId, b.playerName, b.playerRanking,SUM(a.scoreValue) AS playerSum,ROUND(AVG(a.scoreValue),2) as playerAverage
+        FROM scoreinfo a
+        INNER JOIN playerinfo b ON a.playerId = b.playerId AND a.gameId = b.gameId
+        WHERE a.gameId = #{gameId} GROUP BY a.playerId ORDER BY playerAverage DESC
+    </select>
+
+    <select id="getAvgListByDepartment" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT b.playerDepartment,SUM(a.scoreValue),ROUND(AVG(a.scoreValue),2)
+        FROM scoreinfo a
+        INNER JOIN playerinfo b ON a.playerId = b.playerId AND a.gameId = b.gameId
+        WHERE a.gameId = #{gameId} GROUP BY b.playerDepartment ORDER BY playerAverage DESC
+    </select>
+
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.PlayerInfo" >
         INSERT INTO
         playerinfo

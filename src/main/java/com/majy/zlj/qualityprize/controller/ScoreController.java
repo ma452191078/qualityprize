@@ -100,12 +100,12 @@ public class ScoreController {
                     //创建评分明细
                     if (scoreInfo.getScoreRoleInfoList() != null && scoreInfo.getScoreRoleInfoList().size() > 0){
 
-                        //删除原打分记录
+                        //**********删除原打分记录***********
                         ScoreRoleInfo deleteInfo = new ScoreRoleInfo();
                         deleteInfo.setJudgeId(scoreInfo.getJudgeId());
                         deleteInfo.setPlayerId(scoreInfo.getPlayerId());
                         scoreRoleInfoMapper.delete(deleteInfo);
-                        //=====================================
+                        //*********************************
                         for (ScoreRoleInfo scoreRoleInfo : scoreInfo.getScoreRoleInfoList()) {
                             scoreRoleInfo.setScoreId(UUID.randomUUID().toString());
                             scoreRoleInfo.setPlayerId(scoreInfo.getPlayerId());
