@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.majy.zlj.qualityprize.mapper.DepartmentScoreDetailInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.majy.zlj.qualityprize.domain.DepartmentScoreDetailInfo" >
+        <id column="scoreItemId" property="scoreItemId" jdbcType="VARCHAR" />
+        <result column="scoreId" property="scoreId" jdbcType="VARCHAR" />
+        <result column="groupId" property="groupId" jdbcType="VARCHAR" />
+        <result column="gourpName" property="gourpName" jdbcType="DECIMAL" />
+        <result column="score1" property="score1" jdbcType="DECIMAL" />
+        <result column="score2" property="score2" jdbcType="DECIMAL" />
+        <result column="scoreSum" property="scoreSum" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <select id="getAll" resultType="list" resultMap="BaseResultMap"  >
+        SELECT
+        *
+        FROM departmentscoredetailinfo
+    </select>
+
+    <select id="getDepartmentScoreDetailList" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT
+        *
+        FROM departmentscoredetailinfo
+        WHERE scoreId = #{scoreId}
+    </select>
+
+    <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.DepartmentScoreDetailInfo" >
+        INSERT INTO
+        departmentscoredetailinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scoreItemId != null and scoreItemId != '' ">
+                scoreItemId,
+            </if>
+            <if test="scoreId != null and scoreId != '' ">
+                scoreId,
+            </if>
+            <if test="groupId != null and groupId != '' ">
+                groupId,
+            </if>
+            <if test="gourpName != null and gourpName != '' ">
+                score1,
+            </if>
+            <if test="score1 != null and score1 != '' ">
+                score1,
+            </if>
+            <if test="score2 != null and score2 != '' ">
+                score2,
+            </if>
+            <if test="scoreSum != null and scoreSum != '' ">
+                scoreSum,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="scoreItemId != null and scoreItemId != '' ">
+                #{scoreItemId},
+            </if>
+            <if test="scoreId != null and scoreId != '' ">
+                #{scoreId},
+            </if>
+            <if test="groupId != null and groupId != '' ">
+                #{groupId},
+            </if>
+            <if test="gourpName != null and gourpName != '' ">
+                #{gourpName},
+            </if>
+            <if test="score1 != null and score1 != '' ">
+                #{score1},
+            </if>
+            <if test="score2 != null and score2 != '' ">
+                #{score2},
+            </if>
+            <if test="scoreSum != null and scoreSum != '' ">
+                #{scoreSum},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.majy.zlj.qualityprize.domain.DepartmentScoreDetailInfo" >
+        UPDATE
+        departmentscoredetailinfo
+        <set>
+        <if test="groupId != null and groupId != ''">groupId = #{groupId},</if>
+        <if test="gourpName != null and gourpName != ''">gourpName = #{gourpName},</if>
+        <if test="score1 != null and score1 != ''">score1 = #{score1},</if>
+        <if test="score2 != null and score2 != ''">score2 = #{score2},</if>
+        <if test="scoreSum != null and scoreSum != ''">scoreSum = #{scoreSum},</if>
+        </set>
+        WHERE
+        scoreId = #{scoreId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        DELETE FROM
+        departmentscoredetailinfo
+        WHERE
+        scoreItemId =#{scoreItemId}
+    </delete>
+
+    <delete id="deleteByParentId" parameterType="java.lang.String" >
+        DELETE FROM
+        departmentscoredetailinfo
+        WHERE
+        scoreId =#{scoreId}
+    </delete>
+
+</mapper>

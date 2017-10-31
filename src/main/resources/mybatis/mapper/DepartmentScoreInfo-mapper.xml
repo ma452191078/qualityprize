@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.majy.zlj.qualityprize.mapper.DepartmentScoreInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.majy.zlj.qualityprize.domain.DepartmentScoreInfo" >
+        <id column="scoreId" property="scoreId" jdbcType="VARCHAR" />
+        <result column="gameId" property="gameId" jdbcType="VARCHAR" />
+        <result column="departmentName" property="departmentName" jdbcType="VARCHAR" />
+        <result column="score1" property="score1" jdbcType="DECIMAL" />
+        <result column="score2" property="score2" jdbcType="DECIMAL" />
+        <result column="score3" property="score3" jdbcType="DECIMAL" />
+        <result column="score4" property="score4" jdbcType="DECIMAL" />
+        <result column="score5" property="score5" jdbcType="DECIMAL" />
+        <result column="scoreAverage" property="scoreAverage" jdbcType="DECIMAL" />
+        <result column="departmentRanking" property="departmentRanking" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="getAll" resultType="list" resultMap="BaseResultMap"  >
+        SELECT
+        *
+        FROM departmentscore
+    </select>
+
+    <select id="getDepartmentScoreList" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT
+        *
+        FROM departmentscore
+        WHERE gameId = #{gameId}
+    </select>
+
+    <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.DepartmentScoreInfo" >
+        INSERT INTO
+        departmentscore
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scoreId != null and scoreId != '' ">
+                scoreId,
+            </if>
+            <if test="gameId != null and gameId != '' ">
+                gameId,
+            </if>
+            <if test="departmentName != null and departmentName != '' ">
+                departmentName,
+            </if>
+            <if test="score1 != null and score1 != '' ">
+                score1,
+            </if>
+            <if test="score2 != null and score2 != '' ">
+                score2,
+            </if>
+            <if test="score3 != null and score3 != '' ">
+                score3,
+            </if>
+            <if test="score4 != null and score4 != '' ">
+                score4,
+            </if>
+            <if test="score5 != null and score5 != '' ">
+                score5,
+            </if>
+            <if test="scoreAverage != null and scoreAverage != '' ">
+                scoreAverage,
+            </if>
+            <if test="departmentRanking != null and departmentRanking != '' ">
+                departmentRanking,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="scoreId != null and scoreId != '' ">
+                #{scoreId},
+            </if>
+            <if test="gameId != null and gameId != '' ">
+                #{gameId},
+            </if>
+            <if test="departmentName != null and departmentName != '' ">
+                #{departmentName},
+            </if>
+            <if test="score1 != null and score1 != '' ">
+                #{score1},
+            </if>
+            <if test="score2 != null and score2 != '' ">
+                #{score2},
+            </if>
+            <if test="score3 != null and score3 != '' ">
+                #{score3},
+            </if>
+            <if test="score4 != null and score4 != '' ">
+                #{score4},
+            </if>
+            <if test="score5 != null and score5 != '' ">
+                #{score5},
+            </if>
+            <if test="scoreAverage != null and scoreAverage != '' ">
+                #{scoreAverage},
+            </if>
+            <if test="departmentRanking != null and departmentRanking != '' ">
+                #{departmentRanking},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.majy.zlj.qualityprize.domain.DepartmentScoreInfo" >
+        UPDATE
+        departmentscore
+        <set>
+        <if test="departmentName != null and departmentName != ''">departmentName = #{departmentName},</if>
+        <if test="score1 != null and score1 != ''">score1 = #{score1},</if>
+        <if test="score2 != null and score2 != ''">score2 = #{score2},</if>
+        <if test="score3 != null and score3 != ''">score3 = #{score3},</if>
+        <if test="score4 != null and score4 != ''">score4 = #{score4},</if>
+        <if test="score5 != null and score5 != ''">score5 = #{score5},</if>
+        <if test="scoreAverage != null and scoreAverage != ''">scoreAverage = #{scoreAverage},</if>
+        <if test="departmentRanking != null and departmentRanking != ''">departmentRanking = #{departmentRanking},</if>
+        </set>
+        WHERE
+        scoreId = #{scoreId}
+    </update>
+
+    <delete id="delete" parameterType="java.lang.String" >
+        DELETE FROM
+        departmentscore
+        WHERE
+        scoreId =#{scoreId}
+    </delete>
+
+</mapper>
