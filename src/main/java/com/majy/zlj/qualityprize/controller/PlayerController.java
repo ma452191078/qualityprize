@@ -230,10 +230,38 @@ public class PlayerController {
     @RequestMapping("/getPlayerScoreListFroResult")
     public Map<String, Object> getPlayerScoreListFroResult(String gameId){
         Map<String, Object> param = new HashMap<>();
+        GameInfo gameInfo = gameInfoMapper.getGameInfoById(gameId);
         List<PlayerInfo> playerResult = playerInfoMapper.getAvgListByPlayer(gameId);
         List<PlayerInfo> departmentResult = playerInfoMapper.getAvgListByDepartment(gameId);
+        //对选手得分进行排序
+        sortPlayerScore(playerResult);
+        //对公司得分进行排序
+        sortPlayerScore(departmentResult);
+
+        param.put("gameInfo", gameInfo);
         param.put("playerResult", playerResult);
         param.put("departmentResult", departmentResult);
         return param;
+    }
+
+    /**
+     * 排序
+     * @param playerInfoList
+     * @return
+     */
+    private List<PlayerInfo> sortPlayerScore(List<PlayerInfo> playerInfoList){
+        PlayerInfo tempPlayer = new PlayerInfo();
+        if (playerInfoList != null && playerInfoList.size() > 0){
+            for (int i = 0; i < playerInfoList.size(); i++) {
+                if (i > 0 && playerInfoList.get(i).getPlayerAverage().equals(tempPlayer.getPlayerAverage())){
+                    playerInfoList.get(i).setPlayerRanking(tempPlayer.getPlayerRanking());
+                }else{
+                    playerInfoList.get(i).setPlayerRanking(i + 1);
+                }
+                tempPlayer = playerInfoList.get(i);
+            }
+        }
+
+        return playerInfoList;
     }
 }
