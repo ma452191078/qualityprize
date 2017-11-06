@@ -120,4 +120,11 @@
         scoreId =#{scoreId}
     </delete>
 
+    <delete id="deleteByGameId" parameterType="java.lang.String" >
+        DELETE FROM
+        departmentscore
+        WHERE
+        gameId =#{gameId}
+    </delete>
+
 </mapper>

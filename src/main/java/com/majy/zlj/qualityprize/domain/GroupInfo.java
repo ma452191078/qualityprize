@@ -26,4 +26,9 @@ public class GroupInfo {
      * 比赛ID
      */
     private String gameId;
+
+    /**
+     * 计分项,0否，1是
+     */
+    private String scoreFlag;
 }

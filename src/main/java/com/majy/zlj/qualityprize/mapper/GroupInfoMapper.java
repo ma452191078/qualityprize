@@ -17,7 +17,11 @@ public interface GroupInfoMapper {
 
     List<GroupInfo> getGroupListByGameId(String gameId);
 
+    List<GroupInfo> getScoreGroupListByGameId(String gameId);
+
     GroupInfo getGroupInfoById(String groupId);
+
+    int getGroupCountByGameId(String gameId);
 
     int insert(GroupInfo groupInfo);
 

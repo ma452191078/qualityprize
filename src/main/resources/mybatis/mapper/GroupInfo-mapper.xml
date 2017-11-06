@@ -6,6 +6,7 @@
         <result column="groupName" property="groupName" jdbcType="VARCHAR" />
         <result column="groupIndex" property="groupIndex" jdbcType="VARCHAR" />
         <result column="gameId" property="gameId" jdbcType="VARCHAR" />
+        <result column="scoreFlag" property="scoreFlag" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="getAll" resultMap="BaseResultMap"  >
@@ -29,6 +30,9 @@
             <if test="gameId != null and gameId != '' ">
                 and gameId = #{gameId}
             </if>
+            <if test="scoreFlag != null and scoreFlag != '' ">
+                and scoreFlag = #{scoreFlag}
+            </if>
             ORDER BY groupId, groupIndex
         </where>
     </select>
@@ -47,6 +51,22 @@
         WHERE gameId = #{gameId}
     </select>
 
+    <select id="getScoreGroupListByGameId" parameterType="java.lang.String" resultType="com.majy.zlj.qualityprize.domain.GroupInfo">
+        SELECT
+        *
+        FROM groupinfo
+        WHERE gameId = #{gameId}
+        AND scoreFlag = '1'
+    </select>
+
+    <select id="getGroupCountByGameId" parameterType="java.lang.String" resultType="int">
+        SELECT
+        count(*)
+        FROM groupinfo
+        WHERE gameId = #{gameId}
+        AND scoreFlag = '1'
+    </select>
+
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.GroupInfo" >
         INSERT INTO
         groupinfo
@@ -63,6 +83,9 @@
             <if test="gameId != null and gameId != '' ">
                 gameId,
             </if>
+            <if test="scoreFlag != null and scoreFlag != '' ">
+                scoreFlag,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="groupId != null and groupId != '' ">
@@ -77,6 +100,9 @@
             <if test="gameId != null and gameId != '' ">
                 #{gameId},
             </if>
+            <if test="scoreFlag != null and scoreFlag != '' ">
+                #{scoreFlag},
+            </if>
         </trim>
     </insert>
 
@@ -86,6 +112,7 @@
         <set>
             <if test="groupName != null and groupName != ''">groupName = #{groupName},</if>
             <if test="groupIndex != null and groupIndex != ''">groupIndex = #{groupIndex},</if>
+            <if test="scoreFlag != null and scoreFlag != ''">scoreFlag = #{scoreFlag},</if>
         </set>
         WHERE
         groupId = #{groupId}

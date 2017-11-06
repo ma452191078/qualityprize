@@ -61,6 +61,11 @@ public class DepartmentScoreInfo {
     private Integer departmentRanking;
 
     /**
+     * 分组数量
+     */
+    private Integer groupCount;
+
+    /**
      * 样品得分明细
      */
     private List<DepartmentScoreDetailInfo> scoreDetailInfoList;

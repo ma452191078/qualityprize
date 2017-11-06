@@ -55,6 +55,29 @@ public class GroupController {
     }
 
     /**
+     * 查询比赛的分组列表
+     * @param gameId 比赛ID
+     * @return
+     */
+    @RequestMapping("/getScoreGroupInfoList")
+    public Map<String, Object> getScoreGroupInfoList(String gameId){
+        Map<String, Object> result = new HashMap<>();
+
+        List<GroupInfo> groupInfoList = groupInfoMapper.getScoreGroupListByGameId(gameId);
+
+        if (groupInfoList != null && groupInfoList.size() > 0){
+            errFlag = AppConstant.REQUEST_SUCCESS;
+            errMsg = AppConstant.REQUEST_SUCCESS_VALUE;
+        }
+
+        result.put(ERRFLAG, errFlag);
+        result.put(ERRMSG, errMsg);
+        result.put(RESULT, groupInfoList);
+
+        return result;
+    }
+
+    /**
      * 创建一个分组
      * @param groupInfo 分组信息
      * @return

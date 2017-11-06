@@ -230,17 +230,38 @@ public class PlayerController {
     @RequestMapping("/getPlayerScoreListFroResult")
     public Map<String, Object> getPlayerScoreListFroResult(String gameId){
         Map<String, Object> param = new HashMap<>();
+        List<PlayerInfo> playerResult = new ArrayList<>();
+        List<PlayerInfo> tempPlayerList = new ArrayList<>();
+
         GameInfo gameInfo = gameInfoMapper.getGameInfoById(gameId);
-        List<PlayerInfo> playerResult = playerInfoMapper.getAvgListByPlayer(gameId);
+        List<GroupInfo> groupList = groupInfoMapper.getGroupListByGameId(gameId);
+        List<PlayerInfo> playerInfos = playerInfoMapper.getAvgListByPlayer(gameId);
         List<PlayerInfo> departmentResult = playerInfoMapper.getAvgListByDepartment(gameId);
         //对选手得分进行排序
-        sortPlayerScore(playerResult);
+
+        if (playerInfos.size() > 0){
+            //遍历分组，对每个分组样品得分进行排序
+            for (int i = 0; i < groupList.size(); i++) {
+                for (PlayerInfo playerInfo : playerInfos) {
+                    if (playerInfo.getGroupId().equals(groupList.get(i).getGroupId())){
+                        tempPlayerList.add(playerInfo);
+                    }
+                }
+                //排序完成加入传到前台的数组中
+                if (tempPlayerList.size() > 0){
+                    sortPlayerScore(tempPlayerList);
+                    playerResult.addAll(tempPlayerList);
+                }
+                tempPlayerList.clear();
+            }
+        }
         //对公司得分进行排序
         sortPlayerScore(departmentResult);
 
         param.put("gameInfo", gameInfo);
         param.put("playerResult", playerResult);
         param.put("departmentResult", departmentResult);
+        param.put("groupList", groupList);
         return param;
     }
 

@@ -19,4 +19,6 @@ public interface DepartmentScoreInfoMapper {
     int update(DepartmentScoreInfo scoreInfo);
 
     int delete(String scoreId);
+
+    int deleteByGameId(String gameId);
 }

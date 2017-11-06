@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.majy.zlj.qualityprize.mapper.DepartmentMapper" >
+    <resultMap id="BaseResultMap" type="com.majy.zlj.qualityprize.domain.DepartmentInfo" >
+        <id column="departmentId" property="departmentId" jdbcType="VARCHAR" />
+        <result column="departmentName" property="departmentName" jdbcType="VARCHAR" />
+        <result column="gameId" property="gameId" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getDepartmentList" parameterType="java.lang.String" resultMap="BaseResultMap" >
+        SELECT DISTINCT playerDepartment AS departmentName, gameId
+        FROM playerinfo
+        WHERE gameId = #{gameId}
+    </select>
+
+</mapper>
