@@ -6,7 +6,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       username: root
       password: SDL@webchat2015
-      url: jdbc:mysql://114.215.97.217:3306/scoremanager?useUnicode=true&characterEncoding=UTF-8
+      url: jdbc:mysql://114.215.97.217:3306/zlj?useUnicode=true&characterEncoding=UTF-8
       dbcp2:
         validation-query: SELECT 1
         test-while-idle: true
@@ -17,5 +17,5 @@ spring:
 
 #自定义配置参数
 myscore:
-  imgPath: /usr/local/tomcat/tomcat2/webapps/scoremanager_ui/
+  imgPath: /usr/local/tomcat/tomcat2/webapps/zlj/
   imgDictory: static/

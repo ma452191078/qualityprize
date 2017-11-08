@@ -5,7 +5,7 @@
         <id column="scoreItemId" property="scoreItemId" jdbcType="VARCHAR" />
         <result column="scoreId" property="scoreId" jdbcType="VARCHAR" />
         <result column="groupId" property="groupId" jdbcType="VARCHAR" />
-        <result column="gourpName" property="gourpName" jdbcType="DECIMAL" />
+        <result column="groupName" property="groupName" jdbcType="DECIMAL" />
         <result column="score1" property="score1" jdbcType="DECIMAL" />
         <result column="score2" property="score2" jdbcType="DECIMAL" />
         <result column="scoreSum" property="scoreSum" jdbcType="DECIMAL" />
@@ -37,8 +37,8 @@
             <if test="groupId != null and groupId != '' ">
                 groupId,
             </if>
-            <if test="gourpName != null and gourpName != '' ">
-                score1,
+            <if test="groupName != null and groupName != '' ">
+                groupName,
             </if>
             <if test="score1 != null and score1 != '' ">
                 score1,
@@ -60,8 +60,8 @@
             <if test="groupId != null and groupId != '' ">
                 #{groupId},
             </if>
-            <if test="gourpName != null and gourpName != '' ">
-                #{gourpName},
+            <if test="groupName != null and groupName != '' ">
+                #{groupName},
             </if>
             <if test="score1 != null and score1 != '' ">
                 #{score1},
@@ -80,7 +80,7 @@
         departmentscoredetailinfo
         <set>
         <if test="groupId != null and groupId != ''">groupId = #{groupId},</if>
-        <if test="gourpName != null and gourpName != ''">gourpName = #{gourpName},</if>
+        <if test="groupName != null and groupName != ''">groupName = #{groupName},</if>
         <if test="score1 != null and score1 != ''">score1 = #{score1},</if>
         <if test="score2 != null and score2 != ''">score2 = #{score2},</if>
         <if test="scoreSum != null and scoreSum != ''">scoreSum = #{scoreSum},</if>

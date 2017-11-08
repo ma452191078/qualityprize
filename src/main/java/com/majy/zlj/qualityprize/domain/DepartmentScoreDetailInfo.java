@@ -30,7 +30,7 @@ public class DepartmentScoreDetailInfo {
     /**
      * 分组名
      */
-    private String gourpName;
+    private String groupName;
 
     /**
      * 外观质 量得分，由评分产生

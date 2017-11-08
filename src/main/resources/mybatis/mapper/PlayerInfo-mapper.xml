@@ -76,7 +76,7 @@
     </select>
 
     <select id="getAvgListByPlayer" parameterType="java.lang.String" resultMap="BaseResultMap">
-        SELECT b.playerId, b.gameId, b.groupId, b.groupName, b.playerName, b.playerRanking,SUM(a.scoreValue) AS playerSum, ROUND(AVG(a.scoreValue),2) AS playerAverage
+        SELECT b.playerNum,b.playerDepartment, b.playerId, b.gameId, b.groupId, b.groupName, b.playerName, b.playerRanking,SUM(a.scoreValue) AS playerSum, ROUND(AVG(a.scoreValue),2) AS playerAverage
         FROM scoreinfo a
         INNER JOIN playerinfo b ON a.playerId = b.playerId AND a.gameId = b.gameId
         WHERE a.gameId = #{gameId} GROUP BY a.playerId ORDER BY playerAverage DESC, playerName
@@ -87,6 +87,14 @@
         FROM scoreinfo a
         INNER JOIN playerinfo b ON a.playerId = b.playerId AND a.gameId = b.gameId
         WHERE a.gameId = #{gameId} GROUP BY b.playerDepartment ORDER BY playerAverage DESC, playerName
+    </select>
+
+    <select id="getAvgListByGroup" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT b.gameId, b.playerDepartment, b.groupId, b.groupName, SUM(a.scoreValue) AS playerSum, ROUND(AVG(a.scoreValue),2) AS playerAverage
+        FROM scoreinfo a
+        INNER JOIN playerinfo b ON a.playerId = b.playerId AND a.gameId = b.gameId
+        WHERE a.gameId = #{gameId}
+				GROUP BY b.playerDepartment,b.groupId ORDER BY b.playerDepartment, playerAverage DESC
     </select>
 
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.PlayerInfo" >

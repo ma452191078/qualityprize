@@ -21,6 +21,8 @@ public interface PlayerInfoMapper {
 
     List<PlayerInfo> getAvgListByDepartment(String gameId);
 
+    List<PlayerInfo> getAvgListByGroup(String gameId);
+
     PlayerInfo getPlayerInfoById(String playerId);
 
     int insert(PlayerInfo playerInfo);

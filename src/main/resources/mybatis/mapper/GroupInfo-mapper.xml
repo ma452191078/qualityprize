@@ -13,7 +13,7 @@
         SELECT
         *
         FROM groupinfo
-        ORDER BY groupId, groupIndex
+        ORDER BY gameId, groupIndex
     </select>
 
     <select id="getGroupList" parameterType="com.majy.zlj.qualityprize.domain.GroupInfo" resultType="list" resultMap="BaseResultMap"  >
@@ -33,7 +33,7 @@
             <if test="scoreFlag != null and scoreFlag != '' ">
                 and scoreFlag = #{scoreFlag}
             </if>
-            ORDER BY groupId, groupIndex
+            ORDER BY gameId, groupIndex
         </where>
     </select>
 
@@ -42,6 +42,7 @@
         *
         FROM groupinfo
         WHERE groupId = #{groupId}
+        ORDER BY gameId, groupIndex
     </select>
 
     <select id="getGroupListByGameId" parameterType="java.lang.String" resultType="com.majy.zlj.qualityprize.domain.GroupInfo">
@@ -49,6 +50,7 @@
         *
         FROM groupinfo
         WHERE gameId = #{gameId}
+        ORDER BY gameId, groupIndex
     </select>
 
     <select id="getScoreGroupListByGameId" parameterType="java.lang.String" resultType="com.majy.zlj.qualityprize.domain.GroupInfo">
@@ -57,6 +59,7 @@
         FROM groupinfo
         WHERE gameId = #{gameId}
         AND scoreFlag = '1'
+
     </select>
 
     <select id="getGroupCountByGameId" parameterType="java.lang.String" resultType="int">
@@ -65,6 +68,7 @@
         FROM groupinfo
         WHERE gameId = #{gameId}
         AND scoreFlag = '1'
+
     </select>
 
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.GroupInfo" >
