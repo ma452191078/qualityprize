@@ -64,4 +64,14 @@ public class PlayerInfo {
     private String groupId;
     private String groupName;
 
+    /**
+     * 配比
+     */
+    private String playerFormula;
+
+    /**
+     * 批号
+     */
+    private String playerBatchNum;
+
 }

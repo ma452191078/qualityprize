@@ -16,6 +16,8 @@
         <result column="playerActive" property="playerActive" jdbcType="VARCHAR" />
         <result column="groupId" property="groupId" jdbcType="VARCHAR" />
         <result column="groupName" property="groupName" jdbcType="VARCHAR" />
+        <result column="playerFormula" property="playerFormula" jdbcType="VARCHAR" />
+        <result column="playerBatchNum" property="playerBatchNum" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="getAll" resultType="list" resultMap="BaseResultMap"  >
@@ -134,6 +136,12 @@
             <if test="groupName != null and groupName != '' ">
                 groupName,
             </if>
+            <if test="playerFormula != null and playerFormula != '' ">
+                playerFormula,
+            </if>
+            <if test="playerBatchNum != null and playerBatchNum != '' ">
+                playerBatchNum,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="playerId != null and playerId != '' ">
@@ -169,6 +177,12 @@
             <if test="groupName != null and groupName != '' ">
                 #{groupName},
             </if>
+            <if test="playerFormula != null and playerFormula != '' ">
+                #{playerFormula},
+            </if>
+            <if test="playerBatchNum != null and playerBatchNum != '' ">
+                #{playerBatchNum},
+            </if>
         </trim>
     </insert>
 
@@ -189,6 +203,8 @@
         <if test="playerActive != null and playerActive != ''">playerActive = #{playerActive},</if>
         <if test="groupId != null and groupId != ''">groupId = #{groupId},</if>
         <if test="groupName != null and groupName != ''">groupName = #{groupName},</if>
+        <if test="playerBatchNum != null and playerBatchNum != ''">playerBatchNum = #{playerBatchNum},</if>
+        <if test="playerFormula != null and playerFormula != ''">playerFormula = #{playerFormula},</if>
         </set>
         WHERE
         playerId = #{playerId}
