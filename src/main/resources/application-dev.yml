@@ -1,12 +1,12 @@
 server:
-  port: 8080
+  port: 8088
 
 spring:
   datasource:
       driver-class-name: com.mysql.jdbc.Driver
       username: root
       password: root
-      url: jdbc:mysql://192.168.148.130:3306/zlj?characterEncoding=UTF-8&useUnicode=true
+      url: jdbc:mysql://192.168.148.130:3306/pointsmanager?characterEncoding=UTF-8&useUnicode=true
 
 #自定义配置参数
 myscore:

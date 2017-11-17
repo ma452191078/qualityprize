@@ -99,6 +99,14 @@
 				GROUP BY b.playerDepartment,b.groupId ORDER BY b.playerDepartment, playerAverage DESC
     </select>
 
+    <select id="getPlayerListByJudge" parameterType="java.util.Map" resultMap="BaseResultMap" >
+        SELECT DISTINCT
+        playerId
+        FROM scoreinfo
+        WHERE gameId = #{gameId}
+          AND judgeId = #{judgeId}
+    </select>
+
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.PlayerInfo" >
         INSERT INTO
         playerinfo

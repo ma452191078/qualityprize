@@ -52,13 +52,39 @@ public class PlayerController {
      * @return List<PlayerInfo> 选手列表
      */
     @RequestMapping("/getPlayerListByGame")
-    public Map<String, Object> getPlayerListByGame(@RequestParam("gameId") String gameId){
+    public Map<String, Object> getPlayerListByGame(@RequestParam("gameId") String gameId,
+                                                   @RequestParam("judgeId") String judgeId){
         Map<String, Object> param = new HashMap<>();
         List<PlayerInfo> playerInfos = null;
+        List<PlayerInfo> scoreList = null;
         GameInfo gameInfo = new GameInfo();
         if (gameId != null && !"".equals(gameId)){
             gameInfo = gameInfoMapper.getGameInfoById(gameId);
             playerInfos = playerInfoMapper.getPlayerListByGameId(gameId);
+
+            if (judgeId != null && playerInfos != null && playerInfos.size() > 0 ){
+                Map<String, String> scoreMap = new HashMap<>();
+                Map<String, String> searchMap = new HashMap<>();
+                searchMap.put("gameId", gameId);
+                searchMap.put("judgeId", judgeId);
+
+                scoreList = playerInfoMapper.getPlayerListByJudge(searchMap);
+                if (scoreList != null && scoreList.size() > 0){
+
+                    for (PlayerInfo item : scoreList) {
+                        scoreMap.put(item.getPlayerId(), "1");
+                    }
+                }
+
+                for (int i = 0; i < playerInfos.size(); i++) {
+
+                    if ("1".equals(scoreMap.get(playerInfos.get(i).getPlayerId()))){
+                        playerInfos.get(i).setPlayerIsScore("1");
+                    }else {
+                        playerInfos.get(i).setPlayerIsScore("0");
+                    }
+                }
+            }
 
             List<GameRoleInfo> result = gameRoleInfoMapper.getGameRoleListByGame(gameId);
             if (result != null && result.size() > 0){
@@ -159,8 +185,10 @@ public class PlayerController {
         Map<String, String> param = new HashMap<>();
         String addFlag = "failed";
         String addMessage = "评分终止失败，请稍后重试。";
-        BigDecimal sumScore = new BigDecimal(0.00); //总得分
-        BigDecimal avgScore = new BigDecimal(0.00); //平均分
+        //总得分
+        BigDecimal sumScore = new BigDecimal(0.00);
+        //平均分
+        BigDecimal avgScore = new BigDecimal(0.00);
 
         if (playerId != null && !"".equals(playerId)){
             //选手得分计算方法

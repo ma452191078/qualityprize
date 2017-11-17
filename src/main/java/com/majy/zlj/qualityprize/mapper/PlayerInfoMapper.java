@@ -3,6 +3,7 @@ package com.majy.zlj.qualityprize.mapper;
 import com.majy.zlj.qualityprize.domain.PlayerInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by majingyuan on 2017/5/28.
@@ -22,6 +23,8 @@ public interface PlayerInfoMapper {
     List<PlayerInfo> getAvgListByDepartment(String gameId);
 
     List<PlayerInfo> getAvgListByGroup(String gameId);
+
+    List<PlayerInfo> getPlayerListByJudge(Map param);
 
     PlayerInfo getPlayerInfoById(String playerId);
 

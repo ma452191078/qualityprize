@@ -58,6 +58,11 @@ public class PlayerInfo {
      * 可用标识（0可评分，1不可评分）
      */
     private String playerActive;
+
+    /**
+     * 已经打分 （0未打分，1已打分）
+     */
+    private String playerIsScore;
     /**
      * 分组ID
      */
