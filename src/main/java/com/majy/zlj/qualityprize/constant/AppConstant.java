@@ -31,4 +31,9 @@ public interface AppConstant {
      */
     String FLAG_ENABLE = "0";
     String FLAG_DISABLE = "1";
+
+    /**
+     * 评委默认名称
+     */
+    String JUDGE_NAME = "评委";
 }

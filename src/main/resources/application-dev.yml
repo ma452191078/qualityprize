@@ -13,4 +13,8 @@ myscore:
   imgPath: /Library/apache-tomcat-7.0.70/webapps/zlj/
   imgDictory: static/
 
-
+wechatConfig:
+  corpId: wxe83ec6aeca12528c
+  agentId: 1000010
+  secret: tIXgd31c8nLbcawmeDSaasStceZ_X-HVXZBXGqxQhx0
+  redirectUrl: http://weixin.shidanli.cn:8081/zlj/mobile/index.html?gameId=GAMEID

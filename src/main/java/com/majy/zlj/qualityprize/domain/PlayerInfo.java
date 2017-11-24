@@ -19,11 +19,11 @@ public class PlayerInfo {
      */
     private String gameId;
     /**
-     * 顺序
+     * 姓名
      */
     private String playerName;
     /**
-     * 姓名
+     * 顺序
      */
     private Integer playerNum;
     /**
