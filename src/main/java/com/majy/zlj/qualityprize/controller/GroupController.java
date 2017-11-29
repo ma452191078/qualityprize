@@ -4,8 +4,7 @@ import com.majy.zlj.qualityprize.constant.AppConstant;
 import com.majy.zlj.qualityprize.domain.GroupInfo;
 import com.majy.zlj.qualityprize.mapper.GroupInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,19 +31,49 @@ public class GroupController {
 
     /**
      * 查询比赛的分组列表
-     * @param gameId 比赛ID
+     * @param
      * @return
      */
     @RequestMapping("/getGroupInfoList")
     public Map<String, Object> getGroupInfoList(String gameId){
         Map<String, Object> result = new HashMap<>();
-        GroupInfo searchInfo = new GroupInfo();
-        searchInfo.setGameId(gameId);
-        List<GroupInfo> groupInfoList = groupInfoMapper.getGroupList(searchInfo);
+        List<GroupInfo> groupInfoList = null;
+        if (gameId != null && !"".equals(gameId)){
+            GroupInfo searchInfo = new GroupInfo();
+            searchInfo.setGameId(gameId);
+            groupInfoList = groupInfoMapper.getGroupList(searchInfo);
 
-        if (groupInfoList != null && groupInfoList.size() > 0){
-            errFlag = AppConstant.REQUEST_SUCCESS;
-            errMsg = AppConstant.REQUEST_SUCCESS_VALUE;
+            if (groupInfoList != null && groupInfoList.size() > 0){
+                errFlag = AppConstant.REQUEST_SUCCESS;
+                errMsg = AppConstant.REQUEST_SUCCESS_VALUE;
+            }
+        }
+
+        result.put(ERRFLAG, errFlag);
+        result.put(ERRMSG, errMsg);
+        result.put(RESULT, groupInfoList);
+
+        return result;
+    }
+
+    /**
+     * 查询比赛的分组列表
+     * @param
+     * @return
+     */
+    @RequestMapping("/getGroupInfoListReact")
+    public Map<String, Object> getGroupInfoListReact(@RequestBody GroupInfo groupInfo){
+        Map<String, Object> result = new HashMap<>();
+        List<GroupInfo> groupInfoList = null;
+        if (groupInfo != null && !"".equals(groupInfo.getGameId())){
+            GroupInfo searchInfo = new GroupInfo();
+            searchInfo.setGameId(groupInfo.getGameId());
+            groupInfoList = groupInfoMapper.getGroupList(searchInfo);
+
+            if (groupInfoList != null && groupInfoList.size() > 0){
+                errFlag = AppConstant.REQUEST_SUCCESS;
+                errMsg = AppConstant.REQUEST_SUCCESS_VALUE;
+            }
         }
 
         result.put(ERRFLAG, errFlag);
@@ -59,8 +88,8 @@ public class GroupController {
      * @param gameId 比赛ID
      * @return
      */
-    @RequestMapping("/getScoreGroupInfoList")
-    public Map<String, Object> getScoreGroupInfoList(String gameId){
+    @RequestMapping(value = "/getScoreGroupInfoList")
+    public Map<String, Object> getScoreGroupInfoList(@RequestParam("gameId") String gameId){
         Map<String, Object> result = new HashMap<>();
 
         List<GroupInfo> groupInfoList = groupInfoMapper.getScoreGroupListByGameId(gameId);
