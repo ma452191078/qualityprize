@@ -69,7 +69,7 @@ public class JudgeController {
     @RequestMapping("/createJudge")
     public Map<String, Object> createJudge(@RequestParam("gameId") String gameId, @RequestParam("code") String code){
         Map<String,Object> map = new HashMap<String, Object>();
-        int errFlag = AppConstant.DB_WRITE_FAILED;
+        int errFlag = 99;
         String errMsg = "信息创建失败，请重试";
         JudgeInfo judgeInfo = null;
 
@@ -87,6 +87,7 @@ public class JudgeController {
                 }
             } catch (WxErrorException e) {
                 System.out.println(e.getMessage());
+                errFlag = AppConstant.DB_WRITE_FAILED;
                 errMsg = "未查询到用户信息，请先开通企业微信或关注掌上史丹利。";
             }
         } else {
@@ -95,9 +96,18 @@ public class JudgeController {
             judgeInfo.setJudgeId(UUID.randomUUID().toString());
             judgeInfo.setJudgeName(AppConstant.JUDGE_NAME);
         }
-        if (judgeInfo != null && judgeInfoMapper.insert(judgeInfo) > 0){
-            errFlag = AppConstant.DB_WRITE_SUCCESS;
-            errMsg = "创建成功";
+        if (errFlag != AppConstant.DB_WRITE_FAILED){
+            List<JudgeInfo> infos = judgeInfoMapper.getList(judgeInfo);
+            if (infos != null && infos.size() > 0){
+                judgeInfo = infos.get(0);
+                errFlag = AppConstant.DB_WRITE_SUCCESS;
+                errMsg = "评委已存在";
+            }else{
+                judgeInfoMapper.insert(judgeInfo);
+                errFlag = AppConstant.DB_WRITE_SUCCESS;
+                errMsg = "创建成功";
+
+            }
         }
 
         map.put("judgeInfo", judgeInfo);
