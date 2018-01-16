@@ -1,7 +1,9 @@
 package com.majy.zlj.qualityprize.controller;
 
 import com.majy.zlj.qualityprize.configuration.WechatConfig;
+import com.majy.zlj.qualityprize.constant.AppConstant;
 import groovy.util.logging.Slf4j;
+import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.cp.api.WxCpOAuth2Service;
 import me.chanjar.weixin.cp.api.WxCpService;
@@ -46,5 +48,27 @@ public class WechatController {
         String[] res = wxCpOAuth2Service.getUserInfo(code);
         WxCpUser wxCpUser = wxCpService.getUserService().getById(res[0]);
         return wxCpUser.toJson();
+    }
+
+    @RequestMapping("/getJsapiTicket")
+    public Map<String, Object> getJsapiTicket(@RequestParam("pageUrl") String pageUrl){
+        Map<String, Object> map = new HashMap<>(16);
+        int errFlag = 99;
+        String errMsg = "信息创建失败，请重试";
+
+        try {
+            String jsapiTicket = wxCpService.getJsapiTicket();
+            WxJsapiSignature wxJsapiSignature = wxCpService.createJsapiSignature(pageUrl);
+            map.put("jsapiTicket", jsapiTicket);
+            map.put("wxJsapiSignature", wxJsapiSignature);
+
+            errFlag = AppConstant.DB_WRITE_SUCCESS;
+        } catch (WxErrorException e) {
+            errFlag = AppConstant.DB_WRITE_FAILED;
+            e.printStackTrace();
+        }
+
+        map.put("errFlag", errFlag);
+        return map;
     }
 }

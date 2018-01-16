@@ -59,6 +59,7 @@ public class PlayerController {
         List<PlayerInfo> playerInfos = null;
         List<PlayerInfo> scoreList = null;
         GameInfo gameInfo = new GameInfo();
+        List<PlayerInfo> playerScoreList = null;
         if (gameId != null && !"".equals(gameId)){
             gameInfo = gameInfoMapper.getGameInfoById(gameId);
             playerInfos = playerInfoMapper.getPlayerListByGameId(gameId);
@@ -68,7 +69,7 @@ public class PlayerController {
                 Map<String, String> searchMap = new HashMap<>();
                 searchMap.put("gameId", gameId);
                 searchMap.put("judgeId", judgeId);
-
+                playerScoreList = playerInfoMapper.getAvgListByPlayer(gameId);
                 scoreList = playerInfoMapper.getPlayerListByJudge(searchMap);
                 if (scoreList != null && scoreList.size() > 0){
 
@@ -77,10 +78,17 @@ public class PlayerController {
                     }
                 }
 
+                if (playerScoreList != null || playerScoreList.size() > 0){
+                    for (PlayerInfo item : playerScoreList) {
+                        scoreMap.put(item.getPlayerId()+"_score", item.getPlayerAverage().toString());
+                    }
+                }
+
                 for (int i = 0; i < playerInfos.size(); i++) {
 
                     if ("1".equals(scoreMap.get(playerInfos.get(i).getPlayerId()))){
                         playerInfos.get(i).setPlayerIsScore("1");
+                        playerInfos.get(i).setPlayerAverage(new BigDecimal(scoreMap.get(playerInfos.get(i).getPlayerId()+"_score")));
                     }else {
                         playerInfos.get(i).setPlayerIsScore("0");
                     }
