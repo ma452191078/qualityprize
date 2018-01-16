@@ -81,7 +81,7 @@ public class JudgeController {
                 wxCpUser = wxCpService.getUserService().getById(res[0]);
                 if (wxCpUser != null){
                     judgeInfo = new JudgeInfo();
-                    judgeInfo.setGameId(gameId);
+//                    judgeInfo.setGameId(gameId);
                     judgeInfo.setJudgeId(wxCpUser.getUserId());
                     judgeInfo.setJudgeName(wxCpUser.getName());
                 }
@@ -92,7 +92,7 @@ public class JudgeController {
             }
         } else {
             judgeInfo = new JudgeInfo();
-            judgeInfo.setGameId(gameId);
+//            judgeInfo.setGameId(gameId);
             judgeInfo.setJudgeId(UUID.randomUUID().toString());
             judgeInfo.setJudgeName(AppConstant.JUDGE_NAME);
         }

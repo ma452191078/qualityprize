@@ -9,10 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Author majingyuan
@@ -90,6 +87,7 @@ public class DepartmentController {
         BigDecimal scoreSum = new BigDecimal(0.00);
         BigDecimal pointThree = new BigDecimal(0.3);
         BigDecimal pointOne = new BigDecimal(0.1);
+        Integer pointNum = 2;
 
         //查询单位得分表头列表
         List<DepartmentScoreInfo> departmentScoreInfoList = departmentScoreInfoMapper.getDepartmentScoreList(gameId);
@@ -97,7 +95,7 @@ public class DepartmentController {
 
         if (departmentScoreInfoList != null && departmentScoreInfoList.size() > 0){
             for (int i = 0; i < departmentScoreInfoList.size(); i++) {
-
+                simpleSum = new BigDecimal(0.00);
                 String scoreId = departmentScoreInfoList.get(i).getScoreId();
                 departmentScoreInfoList.get(i).setScoreDetailInfoList(detailInfoMapper.getDepartmentScoreDetailList(scoreId));
                 departmentScoreInfoList.get(i).setGroupCount(departmentScoreInfoList.get(i).getScoreDetailInfoList().size());
@@ -106,7 +104,7 @@ public class DepartmentController {
                 if (detailList != null && detailList.size() > 0){
                     for (int j = 0; j < detailList.size(); j++) {
                         //计算每个工艺的得分
-                        simpleSum = new BigDecimal(0.00);
+//                        simpleSum = new BigDecimal(0.00);
                         for (int k = 0; k < playerScoreList.size(); k++) {
                             //查找部门名称一致且分组一致的数据，计算分组得分
                             if (departmentScoreInfoList.get(i).getDepartmentName().equals(playerScoreList.get(k).getPlayerDepartment())
@@ -119,7 +117,7 @@ public class DepartmentController {
                         }
                         //计算样品总得分
                         simpleSum = simpleSum.add(detailList.get(j).getScoreSum());
-                        departmentScoreInfoList.get(i).setScore1(simpleSum.setScale(2, BigDecimal.ROUND_HALF_UP));
+                        departmentScoreInfoList.get(i).setScore1(simpleSum.setScale(pointNum, BigDecimal.ROUND_HALF_UP));
                     }
 
                     departmentScoreInfoList.get(i).setScoreDetailInfoList(detailList);
@@ -128,7 +126,7 @@ public class DepartmentController {
                     scoreSum = new BigDecimal(0.00);
                     //样品得分 = 市场大比 武得分
                     ///scoreSum = scoreSum.add((departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2))).multiply(pointThree));
-                    departmentScoreInfoList.get(i).setScore2(departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2)));
+                    departmentScoreInfoList.get(i).setScore2(departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2)).setScale(pointNum, BigDecimal.ROUND_HALF_UP));
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore2().multiply(pointThree));
                     //厂内产品 考评得分
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore3().multiply(pointThree));
@@ -137,11 +135,20 @@ public class DepartmentController {
                     //销售市场满意度测评得分
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore5().multiply(pointOne));
                     //总裁质量 奖得分
-                    departmentScoreInfoList.get(i).setScoreAverage(scoreSum.setScale(2, BigDecimal.ROUND_HALF_UP));
+                    departmentScoreInfoList.get(i).setScoreAverage(scoreSum.setScale(pointNum, BigDecimal.ROUND_HALF_UP));
                 }
             }
 
-            departmentScoreInfoList = sortDepartmentScore(departmentScoreInfoList);
+            //排序
+            if (departmentScoreInfoList.size()>0){
+                Collections.sort(departmentScoreInfoList, new Comparator<DepartmentScoreInfo>() {
+                    @Override
+                    public int compare(DepartmentScoreInfo o1, DepartmentScoreInfo o2) {
+                        return o2.getScoreAverage().compareTo(o1.getScoreAverage());
+                    }
+                });
+                departmentScoreInfoList = sortDepartmentScore(departmentScoreInfoList);
+            }
         }
 
         result.put("departmentScoreInfoList", departmentScoreInfoList);
@@ -202,6 +209,7 @@ public class DepartmentController {
     private List<DepartmentScoreInfo> sortDepartmentScore(List<DepartmentScoreInfo> departmentScoreInfoList){
         DepartmentScoreInfo tempPlayer = new DepartmentScoreInfo();
         if (departmentScoreInfoList != null && departmentScoreInfoList.size() > 0){
+
             for (int i = 0; i < departmentScoreInfoList.size(); i++) {
                 if (i > 0 && departmentScoreInfoList.get(i).getScoreAverage().equals(tempPlayer.getScoreAverage())){
                     departmentScoreInfoList.get(i).setDepartmentRanking(tempPlayer.getDepartmentRanking());

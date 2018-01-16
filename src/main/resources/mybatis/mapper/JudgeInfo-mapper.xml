@@ -35,6 +35,7 @@
         *
         FROM judgeinfo
         WHERE judgeId = #{judgeId}
+        LIMIT 1
     </select>
 
     <select id="getJudgeInfoByGameId" parameterType="java.lang.String" resultMap="BaseResultMap" >
