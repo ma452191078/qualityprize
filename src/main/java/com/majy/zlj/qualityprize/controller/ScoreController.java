@@ -1,10 +1,7 @@
 package com.majy.zlj.qualityprize.controller;
 
 import com.majy.zlj.qualityprize.constant.AppConstant;
-import com.majy.zlj.qualityprize.domain.GameInfo;
-import com.majy.zlj.qualityprize.domain.PlayerInfo;
-import com.majy.zlj.qualityprize.domain.ScoreInfo;
-import com.majy.zlj.qualityprize.domain.ScoreRoleInfo;
+import com.majy.zlj.qualityprize.domain.*;
 import com.majy.zlj.qualityprize.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +43,13 @@ public class ScoreController {
         if (scoreInfos != null && scoreInfos.size() > 0){
             List<ScoreRoleInfo> scoreRoleInfoList = null;
             for (int i = 0; i < scoreInfos.size(); i++) {
-                scoreInfos.get(i).setJudgeName(judgeInfoMapper.getJudgeInfoById(scoreInfos.get(i).getJudgeId()).getJudgeName());
+                JudgeInfo judgeInfo = judgeInfoMapper.getJudgeInfoById(scoreInfos.get(i).getJudgeId());
+                if (judgeInfo != null && judgeInfo.getJudgeName() != null) {
+                    scoreInfos.get(i).setJudgeName(judgeInfo.getJudgeName());
+                } else {
+                    scoreInfos.get(i).setJudgeName("");
+                }
+
                 ScoreRoleInfo searchInfo = new ScoreRoleInfo();
                 searchInfo.setPlayerId(scoreInfos.get(i).getPlayerId());
                 searchInfo.setJudgeId(scoreInfos.get(i).getJudgeId());

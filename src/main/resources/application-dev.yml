@@ -6,8 +6,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       username: root
       password: root
-      url: jdbc:mysql://192.168.148.130:3306/pointsmanager?characterEncoding=UTF-8&useUnicode=true
-
+      url: jdbc:mysql://192.168.3.138:3306/pointsmanager?characterEncoding=UTF-8&useUnicode=true
 #自定义配置参数
 myscore:
   imgPath: /Library/apache-tomcat-7.0.70/webapps/zlj/
@@ -18,3 +17,4 @@ wechatConfig:
   agentId: 1000010
   secret: tIXgd31c8nLbcawmeDSaasStceZ_X-HVXZBXGqxQhx0
   redirectUrl: http://weixin.shidanli.cn:8081/zlj/mobile/index.html?gameId=GAMEID
+

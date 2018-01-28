@@ -18,6 +18,7 @@
         <result column="groupName" property="groupName" jdbcType="VARCHAR" />
         <result column="playerFormula" property="playerFormula" jdbcType="VARCHAR" />
         <result column="playerBatchNum" property="playerBatchNum" jdbcType="VARCHAR" />
+        <result column="addTime" property="addTime" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="getAll" resultType="list" resultMap="BaseResultMap"  >
@@ -84,6 +85,14 @@
         WHERE a.gameId = #{gameId} GROUP BY a.playerId ORDER BY playerAverage DESC, playerName
     </select>
 
+    <select id="getAvgListByPlayerAndJudge" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT b.playerNum,b.playerDepartment, b.playerId, b.gameId, b.groupId, b.groupName, b.playerName, b.playerRanking,SUM(a.scoreValue) AS playerSum, ROUND(AVG(a.scoreValue),2) AS playerAverage
+        FROM scoreinfo a
+        INNER JOIN playerinfo b ON a.playerId = b.playerId AND a.gameId = b.gameId
+        WHERE a.gameId = #{gameId}
+        AND judgeId = #{judgeId} GROUP BY a.playerId ORDER BY playerAverage DESC, playerName
+    </select>
+
     <select id="getAvgListByDepartment" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT b.playerDepartment,SUM(a.scoreValue) AS playerSum, ROUND(AVG(a.scoreValue),2) AS playerAverage
         FROM scoreinfo a
@@ -97,6 +106,16 @@
         INNER JOIN playerinfo b ON a.playerId = b.playerId AND a.gameId = b.gameId
         WHERE a.gameId = #{gameId}
 				GROUP BY b.playerDepartment,b.groupId ORDER BY b.playerDepartment, playerAverage DESC
+    </select>
+
+    <select id="getPlayerScoreListByJudge" parameterType="java.util.Map" resultMap="BaseResultMap" >
+        SELECT
+        a.scoreValue AS playerAverage, a.addTime, b.playerNum,b.playerDepartment, b.playerId, b.gameId, b.groupId, b.groupName, b.playerName, b.playerRanking
+        FROM scoreinfo a
+        INNER JOIN playerinfo b ON a.playerId = b.playerId AND a.gameId = b.gameId
+        WHERE a.gameId = #{gameId, jdbcType=VARCHAR}
+        AND a.judgeId = #{judgeId, jdbcType=VARCHAR}
+        ORDER BY b.playerNum
     </select>
 
     <select id="getPlayerListByJudge" parameterType="java.util.Map" resultMap="BaseResultMap" >

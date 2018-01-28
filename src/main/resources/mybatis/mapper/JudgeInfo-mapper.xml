@@ -39,10 +39,11 @@
     </select>
 
     <select id="getJudgeInfoByGameId" parameterType="java.lang.String" resultMap="BaseResultMap" >
-        SELECT
-        *
-        FROM judgeinfo
-        WHERE gameId = #{gameId}
+        SELECT DISTINCT
+        a.judgeId, b.judgeName
+        FROM scoreinfo a
+        INNER JOIN judgeinfo b ON a.judgeId = b.judgeId
+        WHERE a.gameId = #{gameId}
     </select>
 
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.JudgeInfo" >

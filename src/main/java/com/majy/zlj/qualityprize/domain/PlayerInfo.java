@@ -79,4 +79,9 @@ public class PlayerInfo {
      */
     private String playerBatchNum;
 
+    /**
+     * 添加时间
+     */
+    private String addTime;
+
 }

@@ -69,7 +69,7 @@ public class PlayerController {
                 Map<String, String> searchMap = new HashMap<>();
                 searchMap.put("gameId", gameId);
                 searchMap.put("judgeId", judgeId);
-                playerScoreList = playerInfoMapper.getAvgListByPlayer(gameId);
+                playerScoreList = playerInfoMapper.getAvgListByPlayerAndJudge(searchMap);
                 scoreList = playerInfoMapper.getPlayerListByJudge(searchMap);
                 if (scoreList != null && scoreList.size() > 0){
 
@@ -85,7 +85,6 @@ public class PlayerController {
                 }
 
                 for (int i = 0; i < playerInfos.size(); i++) {
-
                     if ("1".equals(scoreMap.get(playerInfos.get(i).getPlayerId()))){
                         playerInfos.get(i).setPlayerIsScore("1");
                         playerInfos.get(i).setPlayerAverage(new BigDecimal(scoreMap.get(playerInfos.get(i).getPlayerId()+"_score")));
@@ -356,6 +355,22 @@ public class PlayerController {
         param.put("groupList", groupList);
         return param;
     }
+
+
+    @RequestMapping("/getPlayerScoreListByJudge")
+    public Map<String, Object> getPlayerScoreListByJudge(@RequestParam("judgeId") String judgeId,
+                                                         @RequestParam("gameId") String gameId){
+        Map<String, Object> param = new HashMap<>(16);
+        List<PlayerInfo> playerResult;
+        Map<String, Object> searchMap = new HashMap<>();
+        searchMap.put("judgeId", judgeId);
+        searchMap.put("gameId", gameId);
+        playerResult = playerInfoMapper.getPlayerScoreListByJudge(searchMap);
+
+        param.put("playerResult", playerResult);
+        return param;
+    }
+
 
     /**
      * 排序

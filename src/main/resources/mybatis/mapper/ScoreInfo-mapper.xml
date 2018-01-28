@@ -72,6 +72,14 @@
         ORDER BY scoreValue
     </select>
 
+    <select id="getScoreListByJudge" parameterType="com.majy.zlj.qualityprize.domain.ScoreInfo" resultType="list" resultMap="BaseResultMap" >
+        SELECT
+        *
+        FROM scoreinfo
+        WHERE judgeId = #{judgeId}
+        AND gameId = #{gameId}
+        ORDER BY addTime
+    </select>
 
     <select id="getScoreInfoById" parameterType="java.lang.String" resultMap="BaseResultMap" >
         SELECT

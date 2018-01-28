@@ -20,6 +20,8 @@ public interface ScoreInfoMapper {
 
     List<ScoreInfo> getScoreListByPlayer(String playerId);
 
+    List<ScoreInfo> getScoreListByJudge(String JudgeId);
+
     ScoreInfo getScoreInfoById(String scoreId);
 
     int insert(ScoreInfo scoreInfo);
