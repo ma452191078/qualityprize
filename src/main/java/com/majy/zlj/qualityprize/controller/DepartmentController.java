@@ -81,17 +81,20 @@ public class DepartmentController {
     @RequestMapping("/getFinalResult")
     public Map<String, Object> getFinalResult(String gameId){
         Map<String, Object> result = new HashMap<>();
+        //样品平均分
+        BigDecimal simpleAvg;
         //样品总得分
-        BigDecimal simpleSum = new BigDecimal(0.00);
+        BigDecimal simpleSum;
+        Integer simpleNum;
         //总得分
-        BigDecimal scoreSum = new BigDecimal(0.00);
+        BigDecimal scoreSum ;
         BigDecimal pointThree = new BigDecimal(0.3);
         BigDecimal pointOne = new BigDecimal(0.1);
         Integer pointNum = 2;
 
         //查询单位得分表头列表
         List<DepartmentScoreInfo> departmentScoreInfoList = departmentScoreInfoMapper.getDepartmentScoreList(gameId);
-        List<PlayerInfo> playerScoreList = playerInfoMapper.getAvgListByGroup(gameId);
+        List<PlayerInfo> playerScoreList = playerInfoMapper.getAvgListByPlayer(gameId);
 
         if (departmentScoreInfoList != null && departmentScoreInfoList.size() > 0){
             for (int i = 0; i < departmentScoreInfoList.size(); i++) {
@@ -104,20 +107,28 @@ public class DepartmentController {
                 if (detailList != null && detailList.size() > 0){
                     for (int j = 0; j < detailList.size(); j++) {
                         //计算每个工艺的得分
-//                        simpleSum = new BigDecimal(0.00);
+                        simpleNum = 0;
+                        simpleAvg = new BigDecimal(0.00);
                         for (int k = 0; k < playerScoreList.size(); k++) {
                             //查找部门名称一致且分组一致的数据，计算分组得分
                             if (departmentScoreInfoList.get(i).getDepartmentName().equals(playerScoreList.get(k).getPlayerDepartment())
                                     && detailList.get(j).getGroupId().equals(playerScoreList.get(k).getGroupId())){
-                                //找到分组平均分，下一步计算分组总分
-                                detailList.get(j).setScore1(playerScoreList.get(k).getPlayerAverage());
-                                detailList.get(j).setScoreSum(playerScoreList.get(k).getPlayerAverage().subtract(detailList.get(j).getScore2()));
-                                break;
+                                //计算分组样品平均分的总分
+                                simpleAvg = simpleAvg.add(playerScoreList.get(k).getPlayerAverage());
+                                //分组样品数量
+                                simpleNum = simpleNum + 1;
                             }
                         }
-                        //计算样品总得分
-                        simpleSum = simpleSum.add(detailList.get(j).getScoreSum());
-                        departmentScoreInfoList.get(i).setScore1(simpleSum.setScale(pointNum, BigDecimal.ROUND_HALF_UP));
+                        if (simpleNum > 0){
+                            //根据分组平均分的总分/分组数量得到平均分，生产中心要求以此计算
+                            simpleAvg = simpleAvg.divide(new BigDecimal(simpleNum), pointNum, BigDecimal.ROUND_HALF_UP);
+                            detailList.get(j).setScore1(simpleAvg);
+                            //平均分-养分扣分=分组最终得分
+                            detailList.get(j).setScoreSum(simpleAvg.subtract(detailList.get(j).getScore2()));
+                            //计算样品总得分
+                            simpleSum = simpleSum.add(detailList.get(j).getScoreSum()).setScale(pointNum, BigDecimal.ROUND_HALF_UP);;
+                            departmentScoreInfoList.get(i).setScore1(simpleSum.setScale(pointNum, BigDecimal.ROUND_HALF_UP));
+                        }
                     }
 
                     departmentScoreInfoList.get(i).setScoreDetailInfoList(detailList);
@@ -126,7 +137,7 @@ public class DepartmentController {
                     scoreSum = new BigDecimal(0.00);
                     //样品得分 = 市场大比 武得分
                     ///scoreSum = scoreSum.add((departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2))).multiply(pointThree));
-                    departmentScoreInfoList.get(i).setScore2(departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2)).setScale(pointNum, BigDecimal.ROUND_HALF_UP));
+                    departmentScoreInfoList.get(i).setScore2(departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2), pointNum, BigDecimal.ROUND_HALF_UP));
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore2().multiply(pointThree));
                     //厂内产品 考评得分
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore3().multiply(pointThree));
