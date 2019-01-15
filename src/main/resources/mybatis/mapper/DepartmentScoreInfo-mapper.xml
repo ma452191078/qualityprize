@@ -10,6 +10,8 @@
         <result column="score3" property="score3" jdbcType="DECIMAL" />
         <result column="score4" property="score4" jdbcType="DECIMAL" />
         <result column="score5" property="score5" jdbcType="DECIMAL" />
+        <result column="score6" property="score6" jdbcType="DECIMAL" />
+        <result column="score7" property="score7" jdbcType="DECIMAL" />
         <result column="scoreAverage" property="scoreAverage" jdbcType="DECIMAL" />
         <result column="departmentRanking" property="departmentRanking" jdbcType="INTEGER" />
     </resultMap>
@@ -55,6 +57,12 @@
             <if test="score5 != null and score5 != '' ">
                 score5,
             </if>
+            <if test="score6 != null and score6 != '' ">
+                score6,
+            </if>
+            <if test="score7 != null and score7 != '' ">
+                score7,
+            </if>
             <if test="scoreAverage != null and scoreAverage != '' ">
                 scoreAverage,
             </if>
@@ -87,6 +95,12 @@
             <if test="score5 != null and score5 != '' ">
                 #{score5},
             </if>
+            <if test="score6 != null and score6 != '' ">
+                #{score6},
+            </if>
+            <if test="score7 != null and score7 != '' ">
+                #{score7},
+            </if>
             <if test="scoreAverage != null and scoreAverage != '' ">
                 #{scoreAverage},
             </if>
@@ -106,6 +120,8 @@
         <if test="score3 != null and score3 != ''">score3 = #{score3},</if>
         <if test="score4 != null and score4 != ''">score4 = #{score4},</if>
         <if test="score5 != null and score5 != ''">score5 = #{score5},</if>
+        <if test="score6 != null and score6 != ''">score6 = #{score6},</if>
+        <if test="score7 != null and score7 != ''">score7 = #{score7},</if>
         <if test="scoreAverage != null and scoreAverage != ''">scoreAverage = #{scoreAverage},</if>
         <if test="departmentRanking != null and departmentRanking != ''">departmentRanking = #{departmentRanking},</if>
         </set>

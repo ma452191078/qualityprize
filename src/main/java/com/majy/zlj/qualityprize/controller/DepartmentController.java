@@ -86,10 +86,16 @@ public class DepartmentController {
         //样品总得分
         BigDecimal simpleSum;
         Integer simpleNum;
+
+        // 产品质量综合评比得分
+        BigDecimal qScore;
         //总得分
         BigDecimal scoreSum ;
         BigDecimal pointThree = new BigDecimal(0.3);
         BigDecimal pointOne = new BigDecimal(0.1);
+        BigDecimal pointTwo = new BigDecimal(0.2);
+        BigDecimal pointFour = new BigDecimal(0.4);
+        BigDecimal pointSix = new BigDecimal(0.6);
         Integer pointNum = 2;
 
         //查询单位得分表头列表
@@ -133,16 +139,22 @@ public class DepartmentController {
 
                     departmentScoreInfoList.get(i).setScoreDetailInfoList(detailList);
                     //计算单位的最终得分
-                    //总得分=厂内考评得分*30%+市场产品考评得分*30%+(A区得分+B区得分)/2*30%+销售满意度测评得分*10%
+                    //废弃  总得分=厂内考评得分*30%+市场产品考评得分*30%+(A区得分+B区得分)/2*30%+销售满意度测评得分*10%
+                    //总得分=产品质量综合评比得分*0.6+(A区得分+B区得分)/2*30%+销售满意度测评得分*10%
+                    //产品质量综合评比得分 = 厂内产品质量监督考评得分*0.4 + 市场产品监督考评得分*0.4 + 市场反馈产品质量问题考评得分*0.2
+                    qScore = new BigDecimal(0.00);
+                    qScore = qScore.add(departmentScoreInfoList.get(i).getScore3().multiply(pointFour));
+                    qScore = qScore.add(departmentScoreInfoList.get(i).getScore4().multiply(pointFour));
+                    qScore = qScore.add(departmentScoreInfoList.get(i).getScore6().multiply(pointTwo));
+                    departmentScoreInfoList.get(i).setScore7(qScore);
+
                     scoreSum = new BigDecimal(0.00);
                     //样品得分 = 市场大比 武得分
                     ///scoreSum = scoreSum.add((departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2))).multiply(pointThree));
                     departmentScoreInfoList.get(i).setScore2(departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2), pointNum, BigDecimal.ROUND_HALF_UP));
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore2().multiply(pointThree));
-                    //厂内产品 考评得分
-                    scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore3().multiply(pointThree));
-                    //市场产品 考评得分
-                    scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore4().multiply(pointThree));
+                    //产品质量综合评比得分 考评得分
+                    scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore7().multiply(pointSix));
                     //销售市场满意度测评得分
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore5().multiply(pointOne));
                     //总裁质量 奖得分
