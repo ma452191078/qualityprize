@@ -22,6 +22,7 @@
         *
         FROM departmentscoredetailinfo
         WHERE scoreId = #{scoreId}
+        order by groupId
     </select>
 
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.DepartmentScoreDetailInfo" >
