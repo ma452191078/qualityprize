@@ -2,12 +2,16 @@ package com.majy.zlj.qualityprize.controller;
 
 import com.majy.zlj.qualityprize.configuration.WechatConfig;
 import com.majy.zlj.qualityprize.constant.AppConstant;
+import com.majy.zlj.qualityprize.domain.GameInfo;
+import com.majy.zlj.qualityprize.mapper.GameInfoMapper;
+import com.mysql.jdbc.StringUtils;
 import groovy.util.logging.Slf4j;
 import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.exception.WxErrorException;
 import me.chanjar.weixin.cp.api.WxCpOAuth2Service;
 import me.chanjar.weixin.cp.api.WxCpService;
 import me.chanjar.weixin.cp.bean.WxCpUser;
+import org.codehaus.groovy.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,16 +34,45 @@ public class WechatController {
     WxCpService wxCpService;
     @Autowired
     WechatConfig wechatConfig;
+    @Autowired
+    GameInfoMapper gameInfoMapper;
 
     @RequestMapping("/authorize")
     public Map<String, String> authorize(@RequestParam("gameId") String gameId){
+        GameInfo gameInfo = gameInfoMapper.getGameInfoById(gameId);
+        String url = "";
+        String qr = "";
+        if (gameInfo != null) {
+            if (gameInfo.getGameQr() != null && !"".equals(gameInfo.getGameQr())){
+                qr = gameInfo.getGameQr();
+            }
+            if (gameInfo.getGameUrl() != null && !"".equals(gameInfo.getGameUrl())){
+                url = gameInfo.getGameUrl();
+            } else {
+                url = getUrl(gameId);
+                qr = url;
+            }
+        } else {
+            url = getUrl(gameId);
+            qr = url;
+        }
+        Map<String, String> param = new HashMap<>();
+        param.put("url", url);
+        param.put("qr", qr);
+        return param;
+    }
+
+    /**
+     * 获取url
+     * @param gameId
+     * @return
+     */
+    private String getUrl(String gameId){
         String redirectUrl = wechatConfig.getRedirectUrl();
         redirectUrl = redirectUrl.replace("GAMEID", gameId);
         WxCpOAuth2Service wxCpOAuth2Service = wxCpService.getOauth2Service();
         String url = wxCpOAuth2Service.buildAuthorizationUrl(redirectUrl, null);
-        Map<String, String> param = new HashMap<>();
-        param.put("url", url);
-        return param;
+        return url;
     }
 
     @RequestMapping("/getUserInfo")

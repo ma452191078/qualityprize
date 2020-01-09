@@ -1,8 +1,12 @@
 package com.majy.zlj.qualityprize.controller;
 
+import com.majy.zlj.qualityprize.configuration.WechatConfig;
 import com.majy.zlj.qualityprize.constant.AppConstant;
 import com.majy.zlj.qualityprize.domain.*;
 import com.majy.zlj.qualityprize.mapper.*;
+import com.majy.zlj.qualityprize.utils.BaiduDwz;
+import me.chanjar.weixin.cp.api.WxCpOAuth2Service;
+import me.chanjar.weixin.cp.api.WxCpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +38,11 @@ public class GameController {
     @Autowired
     private ScoreInfoMapper scoreInfoMapper;
 
+    @Autowired
+    WxCpService wxCpService;
+    @Autowired
+    WechatConfig wechatConfig;
+
     @RequestMapping("/getGameList")
     public Map<String,Object> getGameList(GameInfo gameInfo){
         Map<String,Object> map = new HashMap<String, Object>();
@@ -42,10 +51,10 @@ public class GameController {
         }
         UserInfo loginUser = userInfoMapper.getUserInfoById(gameInfo.getAddBy());
         if (loginUser != null){
-            if (AppConstant.USER_ADMIN.equals(loginUser.getUserRole())){
-                gameInfo.setAddBy("");
-            }
-
+            // if (AppConstant.USER_ADMIN.equals(loginUser.getUserRole())){
+            //     gameInfo.setAddBy("");
+            // }
+            gameInfo.setAddBy("");
             List<GameInfo> gameInfoList = gameInfoMapper.getGameList(gameInfo);
             if (gameInfoList != null && gameInfoList.size() > 0){
                 for (int i = 0; i < gameInfoList.size(); i ++){
@@ -106,6 +115,9 @@ public class GameController {
                 if (gameInfo.getGameId() == null || "".equals(gameInfo.getGameId())){
                     //gameId不存在创建比赛
                     gameInfo.setGameId(UUID.randomUUID().toString());
+                    Map<String, String> url = getGameQrUrl(gameInfo.getGameId());
+                    gameInfo.setGameQr(url.get("qr"));
+                    gameInfo.setGameQr(url.get("url"));
                     int result = gameInfoMapper.insert(gameInfo);
                     if (result > 0) {
                         //创建评分规则
@@ -270,5 +282,22 @@ public class GameController {
                 }
             }
         }
+    }
+
+    /**
+     * 获取比赛url
+     * @param gameId
+     * @return
+     */
+    private Map<String,String> getGameQrUrl(String gameId){
+        Map<String,String> result = new HashMap<>();
+        String redirectUrl = wechatConfig.getRedirectUrl();
+        redirectUrl = redirectUrl.replace("GAMEID", gameId);
+        WxCpOAuth2Service wxCpOAuth2Service = wxCpService.getOauth2Service();
+        String url = wxCpOAuth2Service.buildAuthorizationUrl(redirectUrl, null);
+        String qr = BaiduDwz.createShortUrl(url,"1-year");
+        result.put("qr",qr);
+        result.put("url",url);
+        return result;
     }
 }
