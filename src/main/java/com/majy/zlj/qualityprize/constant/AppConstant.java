@@ -1,5 +1,7 @@
 package com.majy.zlj.qualityprize.constant;
 
+import java.math.BigDecimal;
+
 /**
  * 系统常量
  * Created by majingyuan on 2017/9/22.
@@ -36,4 +38,11 @@ public interface AppConstant {
      * 评委默认名称
      */
     String JUDGE_NAME = "评委";
+
+    BigDecimal POINT_ONE = new BigDecimal(0.1);
+    BigDecimal POINT_TWO = new BigDecimal(0.2);
+    BigDecimal POINT_THREE = new BigDecimal(0.3);
+    BigDecimal POINT_FOUR = new BigDecimal(0.4);
+    BigDecimal POINT_FIVE = new BigDecimal(0.5);
+    BigDecimal POINT_SIX = new BigDecimal(0.6);
 }

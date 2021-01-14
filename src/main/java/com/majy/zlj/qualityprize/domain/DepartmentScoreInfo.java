@@ -34,16 +34,17 @@ public class DepartmentScoreInfo {
     private BigDecimal score1;
 
     /**
-     * 市场大比 武得分
+     * 市场大比武得分
      */
     private BigDecimal score2;
 
     /**
-     * 厂内产品 考评得分
+     * 厂内产品考评得分
+     * 养分稳定性考评得分
      */
     private BigDecimal score3;
     /**
-     * 市场产品 考评得分
+     * 市场产品监督考评得分
      */
     private BigDecimal score4;
     /**
@@ -52,6 +53,7 @@ public class DepartmentScoreInfo {
     private BigDecimal score5;
     /**
      * 市场反馈产品质量问题考评得分
+     * 客户VOC综合考评得分
      */
     private BigDecimal score6;
     /**
@@ -59,7 +61,7 @@ public class DepartmentScoreInfo {
      */
     private BigDecimal score7;
     /**
-     * 总裁质量 奖得分，score2*0.3+score7*0.6+score5*0.1
+     * 总裁质量奖得分，score2*0.3+score7*0.6+score5*0.1
      */
     private BigDecimal scoreAverage;
 

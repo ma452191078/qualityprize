@@ -1,30 +1,36 @@
 package com.majy.zlj.qualityprize.utils;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
-public class BaiduDwz {
-    final static String CREATE_API = "https://dwz.cn/admin/v2/create";
-    final static String TOKEN = "b21712783f46f9817c4942e5da57a6e4";
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+/**
+ * 百度短网址
+ * @Author majingyuan
+ * @Date Create in 2020/3/12 15:32
+ */
+public class StanleyDwz {
+    final static String CREATE_API = "http://dw.shidanli.cn/dwzapi/create";
+    final static String TOKEN = "123456";
+
 
     class UrlResponse {
-        @SerializedName("Code")
+        @SerializedName("code")
         private int code;
 
-        @SerializedName("ErrMsg")
-        private String errMsg;
+        @SerializedName("msg")
+        private String msg;
 
-        @SerializedName("LongUrl")
+        @SerializedName("longUrl")
         private String longUrl;
 
-        @SerializedName("ShortUrl")
+        @SerializedName("shortUrl")
         private String shortUrl;
 
         public int getCode() {
@@ -35,12 +41,12 @@ public class BaiduDwz {
             this.code = code;
         }
 
-        public String getErrMsg() {
-            return errMsg;
+        public String getMsg() {
+            return msg;
         }
 
-        public void setErrMsg(String errMsg) {
-            this.errMsg = errMsg;
+        public void setMsg(String msg) {
+            this.msg = msg;
         }
 
         public String getLongUrl() {
@@ -70,8 +76,8 @@ public class BaiduDwz {
      * @return  成功：短网址
      *          失败：返回空字符串
      */
-    public static String createShortUrl(String longUrl, String termOfValidity) {
-        String params = "{\"Url\":\""+ longUrl + "\",\"TermOfValidity\":\""+ termOfValidity + "\"}";
+    public static String createShortUrl(String longUrl) {
+        String params = "{\"longUrl\":\""+ longUrl + "\",\"token\":\""+ TOKEN + "\"}";
 
         BufferedReader reader = null;
         try {
@@ -86,14 +92,12 @@ public class BaiduDwz {
             connection.setRequestMethod("POST");
             // 设置发送数据的格式
             connection.setRequestProperty("Content-Type", "application/json");
-            // 设置发送数据的格式");
-            connection.setRequestProperty("Token", TOKEN);
-
+            connection.setRequestProperty("CharSet", "UTF-8");
             // 发起请求
             connection.connect();
             // utf-8编码
-            OutputStreamWriter out = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-            out.append(params);
+            OutputStream out = connection.getOutputStream();
+            out.write(params.getBytes());
             out.flush();
             out.close();
 
@@ -111,7 +115,7 @@ public class BaiduDwz {
             if (urlResponse.getCode() == 0) {
                 return urlResponse.getShortUrl();
             } else {
-                System.out.println(urlResponse.getErrMsg());
+                System.out.println(urlResponse.getMsg());
             }
 
             return "";
@@ -123,7 +127,7 @@ public class BaiduDwz {
     }
 
     public static void main(String[] args) {
-        String res = createShortUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe83ec6aeca12528c&redirect_uri=http%3A%2F%2Fweixin.shidanli.cn%3A8081%2Fzlj%2Fmobile%2Findex.html%3FgameId%3Dd9b57402-35c4-4fc6-82a3-43ceddc08954&response_type=code&scope=snsapi_base#wechat_redirect","1-year");
+        String res = createShortUrl("https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxe83ec6aeca12528c&redirect_uri=http%3A%2F%2Fweixin.shidanli.cn%3A8081%2Fzlj%2Fmobile%2Findex.html%3FgameId%3Dd9b57402-35c4-4fc6-82a3-43ceddc08954&response_type=code&scope=snsapi_base#wechat_redirect");
         System.out.println(res);
 
     }

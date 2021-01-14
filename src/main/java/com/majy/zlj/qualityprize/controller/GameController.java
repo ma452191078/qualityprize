@@ -117,7 +117,7 @@ public class GameController {
                     gameInfo.setGameId(UUID.randomUUID().toString());
                     Map<String, String> url = getGameQrUrl(gameInfo.getGameId());
                     gameInfo.setGameQr(url.get("qr"));
-                    gameInfo.setGameQr(url.get("url"));
+                    gameInfo.setGameUrl(url.get("url"));
                     int result = gameInfoMapper.insert(gameInfo);
                     if (result > 0) {
                         //创建评分规则
@@ -295,8 +295,8 @@ public class GameController {
         redirectUrl = redirectUrl.replace("GAMEID", gameId);
         WxCpOAuth2Service wxCpOAuth2Service = wxCpService.getOauth2Service();
         String url = wxCpOAuth2Service.buildAuthorizationUrl(redirectUrl, null);
-        String qr = BaiduDwz.createShortUrl(url,"1-year");
-        result.put("qr",qr);
+        // String qr = BaiduDwz.createShortUrl(url,"1-year");
+        result.put("qr",url);
         result.put("url",url);
         return result;
     }
