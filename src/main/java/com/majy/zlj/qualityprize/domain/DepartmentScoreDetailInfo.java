@@ -33,12 +33,12 @@ public class DepartmentScoreDetailInfo {
     private String groupName;
 
     /**
-     * 外观质 量得分，由评分产生
+     * 外观质量得分，由评分产生
      */
     private BigDecimal score1;
 
     /**
-     * 养分含 量扣分
+     * 养分含量扣分
      */
     private BigDecimal score2;
 

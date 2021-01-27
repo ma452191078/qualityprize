@@ -57,11 +57,11 @@ public class DepartmentScoreInfo {
      */
     private BigDecimal score6;
     /**
-     * 产品质量综合评比得分，score3*0.4+score4*0.4+score6*0.2
+     * 产品质量综合评比得分
      */
     private BigDecimal score7;
     /**
-     * 总裁质量奖得分，score2*0.3+score7*0.6+score5*0.1
+     * 总裁质量奖得分
      */
     private BigDecimal scoreAverage;
 

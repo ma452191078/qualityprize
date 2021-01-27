@@ -127,7 +127,7 @@ public class DepartmentController {
                             //平均分-养分扣分=分组最终得分
                             detailList.get(j).setScoreSum(simpleAvg);
                             //计算样品总得分
-                            simpleSum = simpleSum.add(detailList.get(j).getScoreSum()).setScale(pointNum, BigDecimal.ROUND_HALF_UP);;
+                            simpleSum = simpleSum.add(detailList.get(j).getScoreSum()).setScale(pointNum, BigDecimal.ROUND_HALF_UP);
                             departmentScoreInfoList.get(i).setScore1(simpleSum.setScale(pointNum, BigDecimal.ROUND_HALF_UP));
                         }
                     }
@@ -150,7 +150,11 @@ public class DepartmentController {
                     scoreSum = new BigDecimal(0.00);
                     //样品得分 = 市场大比武得分
                     ///scoreSum = scoreSum.add((departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2))).multiply(pointThree));
-                    departmentScoreInfoList.get(i).setScore2(departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(2), pointNum, BigDecimal.ROUND_HALF_UP));
+                    PlayerInfo query = new PlayerInfo();
+                    query.setGameId(gameId);
+                    query.setPlayerDepartment(departmentScoreInfoList.get(i).getDepartmentName());
+                    int count = playerInfoMapper.getDepartmentGroupSize(query);
+                    departmentScoreInfoList.get(i).setScore2(departmentScoreInfoList.get(i).getScore1().divide(new BigDecimal(count), pointNum, BigDecimal.ROUND_HALF_UP));
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore2().multiply(AppConstant.POINT_THREE));
                     //产品质量综合评比得分考评得分
                     scoreSum = scoreSum.add(departmentScoreInfoList.get(i).getScore7().multiply(AppConstant.POINT_FIVE));
@@ -191,25 +195,27 @@ public class DepartmentController {
         if (requestList != null && requestList.getScoreList() != null && requestList.getScoreList().size() > 0){
             departmentScoreInfoMapper.deleteByGameId(requestList.getGameId());
             for (DepartmentScoreInfo scoreInfo : requestList.getScoreList()){
-                if (scoreInfo != null && scoreInfo.getScore2() != null) {
+                if (scoreInfo != null && scoreInfo.getScore3() != null) {
                     scoreInfo.setScoreId(UUID.randomUUID().toString());
                     if (departmentScoreInfoMapper.insert(scoreInfo) > 0){
                         if (scoreInfo.getScoreDetailInfoList() != null && scoreInfo.getScoreDetailInfoList().size() > 0){
                             for (DepartmentScoreDetailInfo detailInfo : scoreInfo.getScoreDetailInfoList()) {
-                                if (detailInfo.getScore2() != null ){
-                                    detailInfo.setScoreItemId(UUID.randomUUID().toString());
-                                    detailInfo.setScoreId(scoreInfo.getScoreId());
-                                    if (detailInfoMapper.insert(detailInfo) > 0){
-                                        errFlag = AppConstant.DB_WRITE_SUCCESS;
-                                        errMsg = "保存成功";
-                                    }else{
-                                        errFlag = AppConstant.DB_WRITE_FAILED;
-                                        errMsg = "保存失败，请重试";
-                                        break;
-                                    }
+                                detailInfo.setScoreItemId(UUID.randomUUID().toString());
+                                detailInfo.setScoreId(scoreInfo.getScoreId());
+                                if (detailInfoMapper.insert(detailInfo) > 0){
+                                    errFlag = AppConstant.DB_WRITE_SUCCESS;
+                                    errMsg = "保存成功";
+                                }else{
+                                    errFlag = AppConstant.DB_WRITE_FAILED;
+                                    errMsg = "保存失败，请重试";
+                                    break;
                                 }
                             }
                         }
+                    } else {
+                        errFlag = AppConstant.DB_WRITE_FAILED;
+                        errMsg = "保存失败，请重试";
+                        break;
                     }
                 }else {
                     errFlag = AppConstant.DB_WRITE_FAILED;

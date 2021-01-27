@@ -37,4 +37,6 @@ public interface PlayerInfoMapper {
     int update(PlayerInfo playerInfo);
 
     int delete(String playerId);
+
+    int getDepartmentGroupSize(PlayerInfo playerInfo);
 }

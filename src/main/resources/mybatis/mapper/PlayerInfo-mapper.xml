@@ -126,6 +126,16 @@
           AND judgeId = #{judgeId}
     </select>
 
+    <select id="getDepartmentGroupSize" parameterType="com.majy.zlj.qualityprize.domain.PlayerInfo" resultType="integer" >
+        select count(1) from (
+            SELECT DISTINCT
+            groupId
+            FROM playerinfo
+            WHERE playerDepartment = #{playerDepartment}
+            and gameId = #{gameId}
+        ) a
+    </select>
+
     <insert id="insert" parameterType="com.majy.zlj.qualityprize.domain.PlayerInfo" >
         INSERT INTO
         playerinfo
